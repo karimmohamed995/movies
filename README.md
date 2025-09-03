@@ -1,15 +1,47 @@
-# movies
+# Movies App
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a starting point for a Movies Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+# 📱 Features & Screens 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+# Screens
+1. Splash Screen
+2. Onboarding
+3. Auth
+
+
+   
+    a. Login
+    
+    
+    b. Register
+    
+    
+    c. Forget Password
+   
+# 4. Home Screen
+   a. Home Tab
+
+
+  b. Search Tab
+
+
+ c. Browse Tab
+
+
+  d. Profile Tab
+
+
+  e. Update Profile
+
+
+  f. Movie Details Screen
+
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
