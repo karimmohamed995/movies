@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/di/di.dart';
 import 'package:movies/providers/language_provider.dart';
+// import 'package:movies/providers/language_provider.dart';
 import 'package:movies/screens/login/cubit/login_cubit.dart';
 import 'package:movies/screens/login/cubit/login_state.dart';
 import 'package:movies/utils/app_assets.dart';
@@ -27,6 +28,7 @@ class _LoginState extends State<LoginScreen> {
   LoginCubit viewModel = getIt();
   int selectedIndex = 0;
   final List<String> flags = ['assets/images/EG.png', 'assets/images/LR.png'];
+  var formKey = GlobalKey<FormState>();
   // late AppLocalizations l10n;
   // bool obscureText = true;
   @override
@@ -56,33 +58,38 @@ class _LoginState extends State<LoginScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.black,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 24),
-                buildAppLogo(context),
-                SizedBox(height: 24),
-                buildEmailTextField(),
-                SizedBox(height: 16),
-                buildPasswordTextField(),
-                SizedBox(height: 16),
-                buildForgetPasswordText(context),
-                SizedBox(height: 24),
-                buildLoginButton(),
-                SizedBox(height: 24),
-                buildSignUpText(),
-                SizedBox(height: 24),
-                buildOrRow(),
-                SizedBox(height: 24),
-                buildGoogleLogin(),
-                SizedBox(height: 24),
-                // buildLanguageToggle(),
-                // SizedBox(height: 24),
-                // buildThemeToggle(),
-              ],
+        body: Form(
+          key: formKey,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 24),
+                    buildAppLogo(context),
+                    SizedBox(height: 24),
+                    buildEmailTextField(),
+                    SizedBox(height: 16),
+                    buildPasswordTextField(),
+                    SizedBox(height: 16),
+                    buildForgetPasswordText(context),
+                    SizedBox(height: 24),
+                    buildLoginButton(),
+                    SizedBox(height: 24),
+                    buildSignUpText(),
+                    SizedBox(height: 24),
+                    buildOrRow(),
+                    SizedBox(height: 24),
+                    buildGoogleLogin(),
+                    SizedBox(height: 24),
+                    buildLanguageToggle(),
+                    // SizedBox(height: 24),
+                    // buildThemeToggle(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -249,17 +256,17 @@ class _LoginState extends State<LoginScreen> {
   // late LanguageProvider languageProvider;
   // late ThemeProvider themeProvider;
 
-  // buildLanguageToggle() => AnimatedToggleSwitch<String>.dual(
-  //   current: languageProvider.currentLocale,
-  //   iconBuilder: (language) =>
-  //       Image.asset(language == "ar" ? AppAssets.egIcon : AppAssets.usIcon),
-  //   first: "ar",
-  //   second: "en",
-  //   onChanged: (language) {
-  //     languageProvider.changeLanguage(language);
-  //     setState(() {});
-  //   },
-  // );
+  buildLanguageToggle() => AnimatedToggleSwitch<String>.dual(
+    current: LanguageProvider.currentLocale,
+    iconBuilder: (language) =>
+        Image.asset(language == "ar" ? AppAssets.egIcon : AppAssets.usIcon),
+    first: "ar",
+    second: "en",
+    onChanged: (language) {
+      LanguageProvider.changeLanguage(language);
+      setState(() {});
+    },
+  );
 
   // buildThemeToggle() => AnimatedToggleSwitch<ThemeMode>.dual(
   //   // current: themeProvider.mode,

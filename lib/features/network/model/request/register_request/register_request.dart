@@ -7,15 +7,17 @@ class RegisterRequest {
   final String name;
   final String email;
   final String password;
-  final String rePassword;
+  final String confirmPassword; // لازم يتسمى كده زي الـ API
   final String phone;
+  final int avaterId; // مكتوبة avaterId بالظبط زي الـ API
 
   RegisterRequest({
     required this.name,
     required this.email,
     required this.password,
-    required this.rePassword,
+    required this.confirmPassword,
     required this.phone,
+    required this.avaterId,
   });
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) =>

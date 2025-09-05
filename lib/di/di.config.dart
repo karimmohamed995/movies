@@ -13,6 +13,7 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../core/shared_pref_help/shared_pref_helper.dart' as _i983;
 import '../features/auth/data/repos/auth/data_sources/auth_remote_data_source.dart'
     as _i107;
 import '../features/auth/data/repos/auth/data_sources/auth_remote_data_source_impl.dart'
@@ -20,8 +21,10 @@ import '../features/auth/data/repos/auth/data_sources/auth_remote_data_source_im
 import '../features/auth/data/repos/auth_repository_impl.dart' as _i473;
 import '../features/auth/domain/repos/auth_repository.dart' as _i307;
 import '../features/auth/domain/usecase/login_usecase.dart' as _i532;
+import '../features/auth/domain/usecase/register_usecase.dart' as _i889;
 import '../features/network/api/movies_services.dart' as _i596;
 import '../screens/login/cubit/login_cubit.dart' as _i344;
+import '../screens/register/cubit/register_cubit.dart' as _i59;
 import 'get_it_modules.dart' as _i320;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -33,6 +36,7 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final getItModule = _$GetItModule();
     gh.factory<_i361.Dio>(() => getItModule.getDio());
+    gh.factory<_i983.SharedPrefHelper>(() => _i983.SharedPrefHelper());
     gh.factory<_i596.MoviesServices>(
       () => _i596.MoviesServices.new(gh<_i361.Dio>()),
     );
@@ -40,13 +44,22 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i533.AuthRemoteDataSourceImpl(gh<_i596.MoviesServices>()),
     );
     gh.factory<_i307.AuthRepository>(
-      () => _i473.AuthRepositoryImpl(gh<_i107.AuthRemoteDataSource>()),
+      () => _i473.AuthRepositoryImpl(
+        gh<_i107.AuthRemoteDataSource>(),
+        gh<_i983.SharedPrefHelper>(),
+      ),
     );
     gh.factory<_i532.LoginUsecase>(
       () => _i532.LoginUsecase(gh<_i307.AuthRepository>()),
     );
+    gh.factory<_i889.RegisterUsecase>(
+      () => _i889.RegisterUsecase(gh<_i307.AuthRepository>()),
+    );
     gh.factory<_i344.LoginCubit>(
       () => _i344.LoginCubit(gh<_i532.LoginUsecase>()),
+    );
+    gh.factory<_i59.RegisterCubit>(
+      () => _i59.RegisterCubit(gh<_i889.RegisterUsecase>()),
     );
     return this;
   }

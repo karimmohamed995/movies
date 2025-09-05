@@ -1,25 +1,16 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-// import 'package:evently/data/firestore_utils.dart';
-// import 'package:evently/l10n/app_localizations.dart';
-// import 'package:evently/model/user_dm.dart';
-// import 'package:evently/services/auth_service.dart';
-// import 'package:evently/ui/providers/language_provider.dart';
-// import 'package:evently/ui/providers/theme_provider.dart';
-// import 'package:evently/ui/utilities/app_assets.dart';
-// import 'package:evently/ui/utilities/app_routes.dart';
-// import 'package:evently/ui/utilities/dialog_utils.dart';
-// import 'package:evently/ui/widgets/custom_button.dart';
-// import 'package:evently/ui/widgets/custom_text_field.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/di/di.dart';
 import 'package:movies/providers/language_provider.dart';
+import 'package:movies/screens/register/cubit/register_cubit.dart';
+import 'package:movies/screens/register/cubit/register_state.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_routes.dart';
+import 'package:movies/utils/dialog_utils.dart';
 import 'package:movies/widgets/custom_button.dart';
 import 'package:movies/widgets/custom_text_field.dart';
-// import 'package:provider/provider.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -33,7 +24,9 @@ class _LoginState extends State<Register> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
+  RegisterCubit viewModel = getIt();
   int selectedIndex = 0;
   final List<String> flags = ['assets/images/EG.png', 'assets/images/LR.png'];
   // late AppLocalizations l10n;
@@ -43,47 +36,68 @@ class _LoginState extends State<Register> {
     // languageProvider = Provider.of(context);
     // themeProvider = Provider.of(context);
     // l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: AppColors.black,
-      appBar: AppBar(
+    return BlocListener<RegisterCubit, RegisterState>(
+      bloc: viewModel,
+      listener: (BuildContext context, RegisterState state) {
+        if (state.registerApi.hasData) {
+          Navigator.pop(context);
+          print("state.loginApi.hasData");
+          Navigator.push(context, AppRoutes.home);
+        } else if (state.registerApi.hasError) {
+          Navigator.pop(context);
+          debugPrint("❌ Login Error: ${state.registerApi.getError.message}");
+          showMessage(
+            context,
+            title: "Error",
+            content: "${state.registerApi.getError.message}",
+            posBtnTitle: "Ok",
+          );
+        } else if (state.registerApi.isLoading) {
+          showLoading(context);
+        }
+      },
+      child: Scaffold(
         backgroundColor: AppColors.black,
-        title: Text("Register"),
-        iconTheme: IconThemeData(color: AppColors.yellow),
-        titleTextStyle: TextStyle(color: AppColors.yellow),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // SizedBox(height: 24),
-                buildAppLogo(context),
-                SizedBox(height: 24),
-                buildNameTextField(),
-                SizedBox(height: 16),
-                buildEmailTextField(),
-                SizedBox(height: 16),
-                buildPasswordTextField(),
-                SizedBox(height: 16),
-                buildRetypePasswordTextField(),
-                SizedBox(height: 16),
-                buildPhoneTextField(),
-                SizedBox(height: 24),
-                buildRegisterButton(),
-                SizedBox(height: 24),
-                buildSignUpText(),
-                SizedBox(height: 24),
-                buildLanguageToggle(),
-                // buildOrRow(),
-                // SizedBox(height: 24),
-                // buildGoogleLogin(),
-                // SizedBox(height: 24),
-                // buildLanguageToggle(),
-                // SizedBox(height: 24),
-                // buildThemeToggle(),
-              ],
+        appBar: AppBar(
+          backgroundColor: AppColors.black,
+          title: Text("Register"),
+          iconTheme: IconThemeData(color: AppColors.yellow),
+          titleTextStyle: TextStyle(color: AppColors.yellow),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // SizedBox(height: 24),
+                  buildAppLogo(context),
+                  SizedBox(height: 24),
+                  buildNameTextField(),
+                  SizedBox(height: 16),
+                  buildEmailTextField(),
+                  SizedBox(height: 16),
+                  buildPasswordTextField(),
+                  SizedBox(height: 16),
+                  buildRetypePasswordTextField(),
+                  SizedBox(height: 16),
+                  buildPhoneTextField(),
+                  SizedBox(height: 24),
+                  buildRegisterButton(),
+                  SizedBox(height: 24),
+                  buildSignUpText(),
+                  SizedBox(height: 24),
+                  buildLanguageToggle(),
+                  // buildOrRow(),
+                  // SizedBox(height: 24),
+                  // buildGoogleLogin(),
+                  // SizedBox(height: 24),
+                  // buildLanguageToggle(),
+                  // SizedBox(height: 24),
+                  // buildThemeToggle(),
+                ],
+              ),
             ),
           ),
         ),
@@ -137,14 +151,23 @@ class _LoginState extends State<Register> {
       // hint: l10n.nameHint,
       hint: "PhoneNumber",
       prefixIcon: AppAssets.phone,
-      controller: userNameController,
+      controller: phoneController,
     ),
   );
 
   buildRegisterButton() => CustomButton(
     // text: l10n.createAccountt,
     text: "Create Account",
-    onClick: () {},
+    onClick: () {
+      viewModel.register(
+        userNameController.text,
+        emailController.text,
+        passwordController.text,
+        rePasswordController.text,
+        phoneController.text,
+        2,
+      );
+    },
     // onClick: () async {
     //   showLoading(context);
     //   await Future.delayed(Duration(seconds: 2));
