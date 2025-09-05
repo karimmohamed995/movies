@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
       // theme: AppTheme.lightTheme,
       // darkTheme: AppTheme.darkTheme,
       // themeMode: themeProvider.themeMode,
-      home: isLoggedIn ? Home() : Splash(),
+      // home: isLoggedIn ? Home() : Splash(),
+      home: Home(),
     );
   }
 }
