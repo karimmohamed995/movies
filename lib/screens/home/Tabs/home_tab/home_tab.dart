@@ -185,11 +185,15 @@ class _HomeTabState extends State<HomeTab> {
                         height: 180,
                         width: 140,
                         errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            "assets/images/placeholder.png",
+                          return Container(
                             height: 180,
                             width: 140,
-                            fit: BoxFit.cover,
+                            color: Colors.grey[800],
+                            child: const Icon(
+                              Icons.broken_image,
+                              color: Colors.white,
+                              size: 40,
+                            ),
                           );
                         },
                       ),
@@ -208,7 +212,7 @@ class _HomeTabState extends State<HomeTab> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          "⭐ ${movie.rating.toStringAsFixed(1)}",
+                          "${movie.rating.toStringAsFixed(1)} ⭐",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
