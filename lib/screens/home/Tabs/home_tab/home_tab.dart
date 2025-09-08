@@ -4,6 +4,7 @@ import 'package:movies/core/api_result/api_result.dart';
 import 'package:movies/screens/home/Tabs/home_tab/cubit/home_tab_cubit.dart';
 import 'package:movies/screens/home/Tabs/home_tab/cubit/home_tab_states.dart';
 import 'package:movies/screens/home/Tabs/home_tab/data/movie_entity.dart';
+import 'package:movies/screens/movie_details/movie_details.dart';
 import 'package:movies/utils/app_colors.dart';
 
 class HomeTab extends StatefulWidget {
@@ -168,79 +169,87 @@ class _HomeTabState extends State<HomeTab> {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         itemBuilder: (context, index) {
           final movie = movies[index];
-          return Container(
-            width: 140,
-            margin: const EdgeInsets.only(right: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Poster + Rating overlay
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        movie.mediumCoverImage ?? "",
-                        fit: BoxFit.cover,
-                        height: 180,
-                        width: 140,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            height: 180,
-                            width: 140,
-                            color: Colors.grey[800],
-                            child: const Icon(
-                              Icons.broken_image,
-                              color: Colors.white,
-                              size: 40,
-                            ),
-                          );
-                        },
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => MovieDetails(movie: movie)),
+              );
+            },
+            child: Container(
+              width: 140,
+              margin: const EdgeInsets.only(right: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Poster + Rating overlay
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          movie.mediumCoverImage ?? "",
+                          fit: BoxFit.cover,
+                          height: 180,
+                          width: 140,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              height: 180,
+                              width: 140,
+                              color: Colors.grey[800],
+                              child: const Icon(
+                                Icons.broken_image,
+                                color: Colors.white,
+                                size: 40,
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    // ⭐ Rating Badge
-                    Positioned(
-                      top: 8,
-                      left: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          "${movie.rating.toStringAsFixed(1)} ⭐",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                      // ⭐ Rating Badge
+                      Positioned(
+                        top: 8,
+                        left: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            "${movie.rating.toStringAsFixed(1)} ⭐",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                // Title
-                Text(
-                  movie.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    ],
                   ),
-                ),
-                // Year
-                Text(
-                  "${movie.year}",
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-              ],
+                  const SizedBox(height: 6),
+                  // Title
+                  Text(
+                    movie.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // Year
+                  Text(
+                    "${movie.year}",
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ],
+              ),
             ),
           );
         },

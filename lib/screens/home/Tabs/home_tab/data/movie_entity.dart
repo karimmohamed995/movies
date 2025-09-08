@@ -5,7 +5,8 @@ class MovieEntity {
   final double rating;
   final int runtime;
   final String? mediumCoverImage;
-  final List<String>? genres; // 👈 أضفناها
+  final String? largeCoverImage; // 👈 ضفناها
+  final List<String>? genres;
 
   MovieEntity({
     required this.id,
@@ -14,6 +15,7 @@ class MovieEntity {
     required this.rating,
     required this.runtime,
     this.mediumCoverImage,
+    this.largeCoverImage, // 👈 ضفناها
     this.genres,
   });
 
@@ -27,6 +29,7 @@ class MovieEntity {
       rating: (json['rating'] as num).toDouble(),
       runtime: json['runtime'],
       mediumCoverImage: json['medium_cover_image'],
+      largeCoverImage: json['large_cover_image'], // 👈 ضفناها هنا
       genres: (json['genres'] as List?)?.map((e) => e.toString()).toList(),
     );
   }
