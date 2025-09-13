@@ -35,8 +35,25 @@ import '../screens/home/Tabs/home_tab/domain/repository/home_repository_impl.dar
     as _i1;
 import '../screens/home/Tabs/home_tab/domain/usecase/load_movies_usecase.dart'
     as _i581;
+import '../screens/home/Tabs/home_tab/mappers/movie_details_mapper.dart'
+    as _i72;
 import '../screens/home/Tabs/home_tab/mappers/movie_mapper.dart' as _i557;
 import '../screens/login/cubit/login_cubit.dart' as _i344;
+import '../screens/movie_details/cubit/movie_details_cubit.dart' as _i360;
+import '../screens/movie_details/cubit/similar_movies_cubit.dart' as _i525;
+import '../screens/movie_details/data/movies_remote_data_source.dart' as _i589;
+import '../screens/movie_details/data/movies_remote_data_source_impl.dart'
+    as _i290;
+import '../screens/movie_details/repository/movies_details_repository.dart'
+    as _i817;
+import '../screens/movie_details/repository/movies_details_repository_impl.dart'
+    as _i158;
+import '../screens/movie_details/repository/movies_repository.dart' as _i520;
+import '../screens/movie_details/repository/movies_repository_impl.dart'
+    as _i672;
+import '../screens/movie_details/usecase/load_similar_movies_usecase.dart'
+    as _i781;
+import '../screens/movie_details/usecase/movie_details_usecase.dart' as _i381;
 import '../screens/register/cubit/register_cubit.dart' as _i59;
 import 'get_it_modules.dart' as _i320;
 
@@ -51,6 +68,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i361.Dio>(() => getItModule.getDio());
     gh.factory<_i983.SharedPrefHelper>(() => _i983.SharedPrefHelper());
     gh.factory<_i557.MovieMapper>(() => _i557.MovieMapper());
+    gh.factory<_i72.MovieDetailsMapper>(() => _i72.MovieDetailsMapper());
     gh.factory<_i596.MoviesServices>(
       () => _i596.MoviesServices.new(gh<_i361.Dio>()),
     );
@@ -60,6 +78,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i107.AuthRemoteDataSource>(
       () => _i533.AuthRemoteDataSourceImpl(gh<_i596.MoviesServices>()),
+    );
+    gh.factory<_i589.MoviesRemoteDataSource>(
+      () => _i290.MoviesRemoteDataSourceImpl(gh<_i39.YtsServices>()),
     );
     gh.factory<_i307.AuthRepository>(
       () => _i473.AuthRepositoryImpl(
@@ -73,17 +94,41 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i557.MovieMapper>(),
       ),
     );
+    gh.factory<_i817.MoviesDetailsRepository>(
+      () => _i158.MoviesDetailsRepositoryImpl(
+        gh<_i589.MoviesRemoteDataSource>(),
+        gh<_i72.MovieDetailsMapper>(),
+      ),
+    );
     gh.factory<_i581.LoadMoviesUsecase>(
       () => _i581.LoadMoviesUsecase(gh<_i936.HomeRepository>()),
     );
-    gh.factory<_i532.LoginUsecase>(
-      () => _i532.LoginUsecase(gh<_i307.AuthRepository>()),
+    gh.factory<_i520.MoviesRepository>(
+      () => _i672.MoviesRepositoryImpl(
+        gh<_i589.MoviesRemoteDataSource>(),
+        gh<_i557.MovieMapper>(),
+      ),
     );
     gh.factory<_i889.RegisterUsecase>(
       () => _i889.RegisterUsecase(gh<_i307.AuthRepository>()),
     );
+    gh.factory<_i532.LoginUsecase>(
+      () => _i532.LoginUsecase(gh<_i307.AuthRepository>()),
+    );
+    gh.factory<_i381.MovieDetailsUsecase>(
+      () => _i381.MovieDetailsUsecase(gh<_i817.MoviesDetailsRepository>()),
+    );
+    gh.factory<_i781.LoadSimilarMoviesUsecase>(
+      () => _i781.LoadSimilarMoviesUsecase(gh<_i520.MoviesRepository>()),
+    );
+    gh.factory<_i525.SimilarMoviesCubit>(
+      () => _i525.SimilarMoviesCubit(gh<_i781.LoadSimilarMoviesUsecase>()),
+    );
     gh.factory<_i344.LoginCubit>(
       () => _i344.LoginCubit(gh<_i532.LoginUsecase>()),
+    );
+    gh.factory<_i360.MovieDetailsCubit>(
+      () => _i360.MovieDetailsCubit(gh<_i381.MovieDetailsUsecase>()),
     );
     gh.factory<_i744.HomeTabCubit>(
       () => _i744.HomeTabCubit(gh<_i581.LoadMoviesUsecase>()),

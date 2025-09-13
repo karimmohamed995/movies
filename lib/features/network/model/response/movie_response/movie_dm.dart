@@ -6,9 +6,9 @@ part 'movie_dm.g.dart';
 class MovieDm {
   final int id;
   final String title;
-  final int year;
-  final double rating;
-  final int runtime;
+  final int? year;
+  final double? rating;
+  final int? runtime;
   final List<String>? genres;
   final String? summary;
 

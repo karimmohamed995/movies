@@ -9,9 +9,9 @@ part of 'movie_dm.dart';
 MovieDm _$MovieDmFromJson(Map<String, dynamic> json) => MovieDm(
   id: (json['id'] as num).toInt(),
   title: json['title'] as String,
-  year: (json['year'] as num).toInt(),
-  rating: (json['rating'] as num).toDouble(),
-  runtime: (json['runtime'] as num).toInt(),
+  year: (json['year'] as num?)?.toInt(),
+  rating: (json['rating'] as num?)?.toDouble(),
+  runtime: (json['runtime'] as num?)?.toInt(),
   genres: (json['genres'] as List<dynamic>?)?.map((e) => e as String).toList(),
   summary: json['summary'] as String?,
   mediumCoverImage: MovieDm._nullableString(json['medium_cover_image']),

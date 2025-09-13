@@ -5,9 +5,9 @@ part 'movie_response.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class MovieResponse {
-  final MovieData data;
+  final MovieData? data;
 
-  MovieResponse({required this.data});
+  MovieResponse({this.data});
 
   factory MovieResponse.fromJson(Map<String, dynamic> json) =>
       _$MovieResponseFromJson(json);
@@ -18,18 +18,16 @@ class MovieResponse {
 @JsonSerializable(explicitToJson: true)
 class MovieData {
   @JsonKey(name: 'movie_count')
-  final int movieCount;
-  final int limit;
-  @JsonKey(name: 'page_number')
-  final int pageNumber;
-  final List<MovieDm> movies;
+  final int? movieCount;
 
-  MovieData({
-    required this.movieCount,
-    required this.limit,
-    required this.pageNumber,
-    required this.movies,
-  });
+  final int? limit;
+
+  @JsonKey(name: 'page_number')
+  final int? pageNumber;
+
+  final List<MovieDm>? movies;
+
+  MovieData({this.movieCount, this.limit, this.pageNumber, this.movies});
 
   factory MovieData.fromJson(Map<String, dynamic> json) =>
       _$MovieDataFromJson(json);

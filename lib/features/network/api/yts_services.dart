@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:movies/features/network/model/response/movie_details_response/movie_details_response.dart';
 import 'package:movies/features/network/model/response/movie_response/movie_response.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
@@ -22,4 +23,14 @@ abstract class YtsServices {
     @Query("query_term") String? search,
     @Query("genre") String? genre,
   });
+
+  @GET("movie_suggestions.json")
+  Future<MovieResponse> getMovieSuggestions(@Query("movie_id") int movieId);
+
+  @GET("movie_details.json")
+  Future<MovieDetailsResponse> getMovieDetails(
+    @Query("movie_id") int movieId,
+    @Query("with_images") bool withImages,
+    @Query("with_cast") bool withCast,
+  );
 }

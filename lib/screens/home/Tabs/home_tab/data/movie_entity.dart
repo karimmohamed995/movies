@@ -3,10 +3,12 @@ class MovieEntity {
   final String title;
   final int year;
   final double rating;
-  final int runtime;
+  final int? runtime;
   final String? mediumCoverImage;
   final String? largeCoverImage; // 👈 ضفناها
   final List<String>? genres;
+  final String? summary;
+  final List<String>? screenshots;
 
   MovieEntity({
     required this.id,
@@ -15,8 +17,10 @@ class MovieEntity {
     required this.rating,
     required this.runtime,
     this.mediumCoverImage,
-    this.largeCoverImage, // 👈 ضفناها
+    this.largeCoverImage,
     this.genres,
+    this.summary,
+    this.screenshots,
   });
 
   factory MovieEntity.fromJson(Map<String, dynamic> json) {
@@ -29,7 +33,7 @@ class MovieEntity {
       rating: (json['rating'] as num).toDouble(),
       runtime: json['runtime'],
       mediumCoverImage: json['medium_cover_image'],
-      largeCoverImage: json['large_cover_image'], // 👈 ضفناها هنا
+      largeCoverImage: json['large_cover_image'],
       genres: (json['genres'] as List?)?.map((e) => e.toString()).toList(),
     );
   }

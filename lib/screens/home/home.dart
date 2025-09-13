@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/di/di.dart';
 import 'package:movies/screens/home/Tabs/explore_tab/explore_tab.dart';
 import 'package:movies/screens/home/Tabs/home_tab/cubit/home_tab_cubit.dart';
-import 'package:movies/screens/home/Tabs/home_tab/cubit/home_tab_states.dart';
 import 'package:movies/screens/home/Tabs/home_tab/home_tab.dart';
 import 'package:movies/screens/home/Tabs/profile_tab/profile_tab.dart';
 import 'package:movies/screens/home/Tabs/seach_tab/search_tab.dart';

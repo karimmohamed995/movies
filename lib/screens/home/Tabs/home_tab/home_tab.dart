@@ -83,7 +83,7 @@ class _HomeTabState extends State<HomeTab> {
                   final error = moviesState.getError;
                   return Center(
                     child: Text(
-                      "Error: ${error.message ?? 'Unknown error'}",
+                      "Error: ${error.message}",
                       style: const TextStyle(color: Colors.red),
                     ),
                   );
@@ -173,7 +173,9 @@ class _HomeTabState extends State<HomeTab> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => MovieDetails(movie: movie)),
+                MaterialPageRoute(
+                  builder: (_) => MovieDetails(movieId: movie.id),
+                ),
               );
             },
             child: Container(

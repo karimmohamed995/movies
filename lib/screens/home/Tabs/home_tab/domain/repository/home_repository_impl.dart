@@ -18,10 +18,13 @@ class HomeRepositoryImpl extends HomeRepository {
   Future<ApiResult<List<MovieEntity>>> getMovies() async {
     try {
       ApiResult<MovieResponse> result = await _remoteDataSource.getMovies();
+
       if (result.hasData) {
-        return SuccessApiResult(
-          _mapper.fromDataModels(result.getData.data.movies),
-        );
+        final response = result.getData;
+
+        final movies = response.data?.movies ?? []; // 👈 آمنة
+
+        return SuccessApiResult(_mapper.fromDataModels(movies));
       } else {
         return ErrorApiResult(result.getError);
       }
