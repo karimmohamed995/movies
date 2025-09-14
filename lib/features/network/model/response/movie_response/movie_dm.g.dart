@@ -13,11 +13,15 @@ MovieDm _$MovieDmFromJson(Map<String, dynamic> json) => MovieDm(
   rating: (json['rating'] as num?)?.toDouble(),
   runtime: (json['runtime'] as num?)?.toInt(),
   genres: (json['genres'] as List<dynamic>?)?.map((e) => e as String).toList(),
-  summary: json['summary'] as String?,
+  descriptionFull: json['description_full'] as String?,
+  descriptionIntro: json['description_intro'] as String?,
   mediumCoverImage: MovieDm._nullableString(json['medium_cover_image']),
   largeCoverImage: MovieDm._nullableString(json['large_cover_image']),
   torrents: (json['torrents'] as List<dynamic>?)
       ?.map((e) => Torrent.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  cast: (json['cast'] as List<dynamic>?)
+      ?.map((e) => CastDm.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
@@ -28,10 +32,12 @@ Map<String, dynamic> _$MovieDmToJson(MovieDm instance) => <String, dynamic>{
   'rating': instance.rating,
   'runtime': instance.runtime,
   'genres': instance.genres,
-  'summary': instance.summary,
+  'description_full': instance.descriptionFull,
+  'description_intro': instance.descriptionIntro,
   'medium_cover_image': instance.mediumCoverImage,
   'large_cover_image': instance.largeCoverImage,
   'torrents': instance.torrents?.map((e) => e.toJson()).toList(),
+  'cast': instance.cast?.map((e) => e.toJson()).toList(),
 };
 
 Torrent _$TorrentFromJson(Map<String, dynamic> json) => Torrent(
@@ -60,4 +66,18 @@ Map<String, dynamic> _$TorrentToJson(Torrent instance) => <String, dynamic>{
   'date_uploaded': instance.dateUploaded,
   'date_uploaded_unix': instance.dateUploadedUnix,
   'magnet_url': instance.magnetUrl,
+};
+
+CastDm _$CastDmFromJson(Map<String, dynamic> json) => CastDm(
+  name: json['name'] as String?,
+  characterName: json['character_name'] as String?,
+  imageUrl: json['url_small_image'] as String?,
+  imdbCode: json['imdb_code'] as String?,
+);
+
+Map<String, dynamic> _$CastDmToJson(CastDm instance) => <String, dynamic>{
+  'name': instance.name,
+  'character_name': instance.characterName,
+  'url_small_image': instance.imageUrl,
+  'imdb_code': instance.imdbCode,
 };

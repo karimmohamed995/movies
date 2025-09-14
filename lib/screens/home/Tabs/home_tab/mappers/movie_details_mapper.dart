@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:movies/features/network/model/response/movie_details_response/movie_details_response.dart';
+import 'package:movies/screens/home/Tabs/home_tab/data/cast_entitty.dart';
 import 'package:movies/screens/home/Tabs/home_tab/data/movie_entity.dart';
 
 @injectable
@@ -11,6 +12,17 @@ class MovieDetailsMapper {
       movie.medium_screenshot_image2,
       movie.medium_screenshot_image3,
     ].whereType<String>().toList();
+
+    // تحويل الـ cast
+    final castList = (movie.cast ?? [])
+        .map(
+          (c) => CastEntity(
+            name: c.name ?? "",
+            characterName: c.characterName ?? "",
+            urlSmallImage: c.imageUrl,
+          ),
+        )
+        .toList();
 
     return MovieEntity(
       id: movie.id ?? 0,
@@ -25,6 +37,7 @@ class MovieDetailsMapper {
           ? movie.description_full!
           : (movie.description_intro ?? ""),
       screenshots: screenshots,
+      cast: castList, // 👈 ضفناها هنا
     );
   }
 }

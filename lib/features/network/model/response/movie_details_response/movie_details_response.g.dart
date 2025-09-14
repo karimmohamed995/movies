@@ -54,6 +54,9 @@ MovieDetailsDm _$MovieDetailsDmFromJson(Map<String, dynamic> json) =>
       large_screenshot_image1: json['large_screenshot_image1'] as String?,
       large_screenshot_image2: json['large_screenshot_image2'] as String?,
       large_screenshot_image3: json['large_screenshot_image3'] as String?,
+      cast: (json['cast'] as List<dynamic>?)
+          ?.map((e) => CastDm.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$MovieDetailsDmToJson(MovieDetailsDm instance) =>
@@ -74,4 +77,5 @@ Map<String, dynamic> _$MovieDetailsDmToJson(MovieDetailsDm instance) =>
       'large_screenshot_image2': instance.large_screenshot_image2,
       'large_screenshot_image3': instance.large_screenshot_image3,
       'genres': instance.genres,
+      'cast': instance.cast,
     };

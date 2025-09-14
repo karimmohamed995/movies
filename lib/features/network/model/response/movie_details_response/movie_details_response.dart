@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movies/features/network/model/response/movie_response/movie_dm.dart';
 
 part 'movie_details_response.g.dart';
 
@@ -43,6 +44,7 @@ class MovieDetailsDm {
   final String? large_screenshot_image3;
   // 🔹 أضف الـ genres
   final List<String>? genres;
+  final List<CastDm>? cast;
 
   MovieDetailsDm({
     this.id,
@@ -61,6 +63,7 @@ class MovieDetailsDm {
     this.large_screenshot_image1,
     this.large_screenshot_image2,
     this.large_screenshot_image3,
+    this.cast,
   });
 
   factory MovieDetailsDm.fromJson(Map<String, dynamic> json) =>

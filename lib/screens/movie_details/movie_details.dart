@@ -186,6 +186,93 @@ class MovieDetails extends StatelessWidget {
                 },
               ),
 
+              // 🔹 Cast Section
+              const SizedBox(height: 20),
+              buildSectionTitle("Cast"),
+              const SizedBox(height: 12),
+              BlocBuilder<MovieDetailsCubit, MovieDetailsStates>(
+                builder: (context, state) {
+                  final movieState = state.movieDetailsState;
+
+                  if (movieState is SuccessApiResult<MovieEntity>) {
+                    final movie = movieState.getData;
+                    final cast = movie.cast ?? [];
+
+                    if (cast.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "No cast available",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                      );
+                    }
+
+                    return ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: cast.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final actor = cast[index];
+                        return Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[850],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // صورة الممثل
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  actor.urlSmallImage ??
+                                      "https://via.placeholder.com/80",
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+
+                              // الاسم + الشخصية
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Name : ${actor.name}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "Character : ${actor.characterName}",
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+              ),
+
               const SizedBox(height: 30),
             ],
           ),

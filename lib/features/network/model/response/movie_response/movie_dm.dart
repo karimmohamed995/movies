@@ -10,7 +10,12 @@ class MovieDm {
   final double? rating;
   final int? runtime;
   final List<String>? genres;
-  final String? summary;
+
+  @JsonKey(name: 'description_full')
+  final String? descriptionFull;
+
+  @JsonKey(name: 'description_intro')
+  final String? descriptionIntro;
 
   @JsonKey(name: 'medium_cover_image', fromJson: _nullableString)
   final String? mediumCoverImage;
@@ -20,17 +25,22 @@ class MovieDm {
 
   final List<Torrent>? torrents;
 
+  // ✅ أضفنا الـ cast
+  final List<CastDm>? cast;
+
   MovieDm({
     required this.id,
     required this.title,
-    required this.year,
-    required this.rating,
-    required this.runtime,
+    this.year,
+    this.rating,
+    this.runtime,
     this.genres,
-    this.summary,
+    this.descriptionFull,
+    this.descriptionIntro,
     this.mediumCoverImage,
     this.largeCoverImage,
     this.torrents,
+    this.cast,
   });
 
   factory MovieDm.fromJson(Map<String, dynamic> json) =>
@@ -38,7 +48,6 @@ class MovieDm {
 
   Map<String, dynamic> toJson() => _$MovieDmToJson(this);
 
-  // helper function لتجنب null أو أي قيمة مش String
   static String? _nullableString(dynamic value) {
     if (value is String && value.isNotEmpty) return value;
     return null;
@@ -85,4 +94,24 @@ class Torrent {
       _$TorrentFromJson(json);
 
   Map<String, dynamic> toJson() => _$TorrentToJson(this);
+}
+
+@JsonSerializable()
+class CastDm {
+  final String? name;
+
+  @JsonKey(name: 'character_name')
+  final String? characterName;
+
+  @JsonKey(name: 'url_small_image')
+  final String? imageUrl;
+
+  @JsonKey(name: 'imdb_code')
+  final String? imdbCode;
+
+  CastDm({this.name, this.characterName, this.imageUrl, this.imdbCode});
+
+  factory CastDm.fromJson(Map<String, dynamic> json) => _$CastDmFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CastDmToJson(this);
 }
