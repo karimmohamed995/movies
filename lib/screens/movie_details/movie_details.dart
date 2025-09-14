@@ -225,7 +225,6 @@ class MovieDetails extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // صورة الممثل
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(
@@ -237,8 +236,6 @@ class MovieDetails extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 12),
-
-                              // الاسم + الشخصية
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,6 +263,60 @@ class MovieDetails extends StatelessWidget {
                           ),
                         );
                       },
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+              ),
+
+              // 🔹 Genres Section
+              const SizedBox(height: 20),
+              buildSectionTitle("Genres"),
+              const SizedBox(height: 12),
+              BlocBuilder<MovieDetailsCubit, MovieDetailsStates>(
+                builder: (context, state) {
+                  final movieState = state.movieDetailsState;
+
+                  if (movieState is SuccessApiResult<MovieEntity>) {
+                    final movie = movieState.getData;
+                    final genres = movie.genres ?? [];
+
+                    if (genres.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "No genres available",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                      );
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: genres.map((genre) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[850],
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              genre,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     );
                   }
 
