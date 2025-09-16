@@ -11,16 +11,13 @@ import 'package:movies/utils/app_colors.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int currentIndex = 0;
-
   late final List<Widget> tabs;
-
   @override
   void initState() {
     super.initState();

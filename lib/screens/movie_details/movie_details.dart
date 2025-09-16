@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/screens/home/Tabs/home_tab/data/movie_entity.dart';
+import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/screens/movie_details/cubit/movie_details_cubit.dart';
 import 'package:movies/screens/movie_details/cubit/movie_details_states.dart';
@@ -225,15 +226,37 @@ class MovieDetails extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  actor.urlSmallImage ??
-                                      "https://via.placeholder.com/80",
-                                  height: 60,
-                                  width: 60,
-                                  fit: BoxFit.cover,
+                              Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[800],
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
+                                child:
+                                    (actor.urlSmallImage != null &&
+                                        actor.urlSmallImage!.isNotEmpty)
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(
+                                          actor.urlSmallImage!,
+                                          height: 60,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  const Icon(
+                                                    Icons.person,
+                                                    color: Colors.white,
+                                                    size: 30,
+                                                  ),
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -319,7 +342,6 @@ class MovieDetails extends StatelessWidget {
                       ),
                     );
                   }
-
                   return const SizedBox.shrink();
                 },
               ),
@@ -332,7 +354,7 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  // 🎬 Header
+  // 🎬 Header with Play Image
   Widget buildHeader(
     BuildContext context,
     double screenHeight,
@@ -379,6 +401,17 @@ class MovieDetails extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        // Play Image
+        Positioned.fill(
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                debugPrint("Play movie trailer clicked!");
+              },
+              child: Image.asset(AppAssets.videoImage, width: 80, height: 80),
+            ),
           ),
         ),
         // Title + Stats

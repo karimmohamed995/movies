@@ -22,4 +22,5 @@ abstract final class AppAssets {
   static const String exploreY = "assets/images/exploreY.png";
   static const String profileY = "assets/images/ProfileY.png";
   static const String emptyScreen = "assets/images/Empty 1.png";
+  static const String videoImage = "assets/images/video_play.png";
 }
